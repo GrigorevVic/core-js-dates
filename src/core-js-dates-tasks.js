@@ -193,7 +193,7 @@ function getWeekNumberByDate(/* date */) {
  */
 function getNextFridayThe13th(date) {
   let res = date;
-  while (true) {
+  for (;;) {
     let year = res.getFullYear();
     let month = res.getMonth();
     res = new Date(year, month, 13);
