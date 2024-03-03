@@ -17,8 +17,9 @@
  * '01 Jan 1970 00:00:00 UTC' => 0
  * '04 Dec 1995 00:12:00 UTC' => 818035920000
  */
-function dateToTimestamp(/* date */) {
-  throw new Error('Not implemented');
+function dateToTimestamp(date) {
+  const dateMilliseconds = new Date(date);
+  return dateMilliseconds.getTime();
 }
 
 /**
@@ -31,8 +32,11 @@ function dateToTimestamp(/* date */) {
  * Date(2023, 5, 1, 8, 20, 55) => '08:20:55'
  * Date(2015, 10, 20, 23, 15, 1) => '23:15:01'
  */
-function getTime(/* date */) {
-  throw new Error('Not implemented');
+function getTime(date) {
+  const hours = String(date.getHours()).padStart(2, '0');
+  const min = String(date.getMinutes()).padStart(2, '0');
+  const sec = String(date.getSeconds()).padStart(2, '0');
+  return `${hours}:${min}:${sec}`;
 }
 
 /**
@@ -46,8 +50,18 @@ function getTime(/* date */) {
  * '03 Dec 1995 00:12:00 UTC' => 'Sunday'
  * '2024-01-30T00:00:00.000Z' => 'Tuesday'
  */
-function getDayName(/* date */) {
-  throw new Error('Not implemented');
+function getDayName(date) {
+  const obj = new Date(date);
+  const days = [
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+  ];
+  return days[obj.getDay()];
 }
 
 /**
@@ -91,8 +105,12 @@ function getCountDaysInMonth(/* month, year */) {
  * '2024-02-01T00:00:00.000Z', '2024-02-02T00:00:00.000Z'  => 2
  * '2024-02-01T00:00:00.000Z', '2024-02-12T00:00:00.000Z'  => 12
  */
-function getCountDaysOnPeriod(/* dateStart, dateEnd */) {
-  throw new Error('Not implemented');
+function getCountDaysOnPeriod(dateStart, dateEnd) {
+  const start = new Date(dateStart);
+  const end = new Date(dateEnd);
+  const day = 1000 * 60 * 60 * 24;
+  const diff = end.getTime() - start.getTime();
+  return Math.round(diff / day) + 1;
 }
 
 /**
@@ -149,7 +167,6 @@ function getCountWeekendsInMonth(/* month, year */) {
 
 /**
  * Returns the week number of the year for a given date.
- * The first week is the one that falls on January 1.
  *
  * @param {Date} date - The date for which to find the week number.
  * @return {number} - The week number of the year.
@@ -174,8 +191,22 @@ function getWeekNumberByDate(/* date */) {
  * Date(2024, 0, 13) => Date(2024, 8, 13)
  * Date(2023, 1, 1) => Date(2023, 9, 13)
  */
-function getNextFridayThe13th(/* date */) {
-  throw new Error('Not implemented');
+function getNextFridayThe13th(date) {
+  let res = date;
+  while (true) {
+    let year = res.getFullYear();
+    let month = res.getMonth();
+    res = new Date(year, month, 13);
+    const day = res.getDay();
+    if (day === 5) return res;
+    if (month === 11) {
+      month = 0;
+      year += 1;
+    } else {
+      month += 1;
+    }
+    res = new Date(year, month, 13);
+  }
 }
 
 /**
@@ -189,8 +220,9 @@ function getNextFridayThe13th(/* date */) {
  * Date(2024, 5, 1) => 2
  * Date(2024, 10, 10) => 4
  */
-function getQuarter(/* date */) {
-  throw new Error('Not implemented');
+function getQuarter(date) {
+  const quarter = [1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4];
+  return quarter[date.getMonth()];
 }
 
 /**
@@ -227,8 +259,12 @@ function getWorkSchedule(/* period, countWorkDays, countOffDays */) {
  * Date(2022, 2, 1) => false
  * Date(2020, 2, 1) => true
  */
-function isLeapYear(/* date */) {
-  throw new Error('Not implemented');
+function isLeapYear(date) {
+  const year = date.getFullYear();
+  if (year % 400 === 0) return true;
+  if (year % 100 === 0) return false;
+  if (year % 4 === 0) return true;
+  return false;
 }
 
 module.exports = {
