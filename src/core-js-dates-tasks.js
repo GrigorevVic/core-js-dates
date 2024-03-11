@@ -90,8 +90,8 @@ function getNextFriday(/* date */) {
  * 1, 2024 => 31
  * 2, 2024 => 29
  */
-function getCountDaysInMonth(/* month, year */) {
-  throw new Error('Not implemented');
+function getCountDaysInMonth(month, year) {
+  return new Date(year, month, 0).getDate();
 }
 
 /**
@@ -145,8 +145,19 @@ function isDateInPeriod(/* date, period */) {
  * '1999-01-05T02:20:00.000Z' => '1/5/1999, 2:20:00 AM'
  * '2010-12-15T22:59:00.000Z' => '12/15/2010, 10:59:00 PM'
  */
-function formatDate(/* date */) {
-  throw new Error('Not implemented');
+function formatDate(date) {
+  const objDate = new Date(date);
+  const time = objDate.getTime();
+  const offset = objDate.getTimezoneOffset();
+  const newDate = new Date(time + offset * 60 * 1000);
+  const year = newDate.getFullYear();
+  const month = newDate.getMonth() + 1;
+  const day = newDate.getDate();
+  const hour = newDate.getHours() % 12 || 12;
+  const min = newDate.getMinutes().toString();
+  const sec = newDate.getSeconds().toString();
+  const ampm = newDate.getHours() >= 12 ? 'PM' : 'AM';
+  return `${month}/${day}/${year}, ${hour}:${min.padStart(2, '0')}:${sec.padStart(2, '0')} ${ampm}`;
 }
 
 /**
